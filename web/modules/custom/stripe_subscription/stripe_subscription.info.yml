@@ -1,0 +1,24 @@
+name: Stripe Subscription
+type: module
+description: 'Provides Stripe subscription functionality for Drupal.'
+package: Accessilife
+core_version_requirement: ^10 || ^11
+configure: stripe_subscription.settings
+dependencies:
+  - drupal:node
+  - drupal:user
+  - drupal:field
+  - drupal:field_ui
+
+config_devel:
+  install:
+    - field.storage.user.field_stripe_customer_id
+    - field.field.user.user.field_stripe_customer_id
+    - field.storage.user.field_business_name
+    - field.field.user.user.field_business_name
+    - field.storage.user.field_abn
+    - field.field.user.user.field_abn
+
+stylesheets:
+  all:
+    - css/provider-registration.css

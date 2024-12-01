@@ -1,0 +1,74 @@
+stripe_subscription.settings:
+  path: '/admin/config/services/stripe-subscription'
+  defaults:
+    _form: '\Drupal\stripe_subscription\Form\StripeSubscriptionSettingsForm'
+    _title: 'Stripe Subscription Settings'
+  requirements:
+    _permission: 'administer stripe subscription'
+
+stripe_subscription.payment_form:
+  path: '/subscription/payment'
+  defaults:
+    _form: '\Drupal\stripe_subscription\Form\StripePaymentForm'
+    _title: 'Complete Your Provider Registration'
+  requirements:
+    _custom_access: 'stripe_subscription.access_checker:checkPaymentAccess'
+  options:
+    _admin_route: FALSE
+    no_cache: TRUE
+
+stripe_subscription.payment_process:
+  path: '/subscription/payment/process'
+  defaults:
+    _controller: '\Drupal\stripe_subscription\Controller\StripeSubscriptionController::processPayment'
+    _title: 'Process Payment'
+  requirements:
+    _custom_access: 'stripe_subscription.access_checker:checkPaymentAccess'
+  methods: [POST]
+  options:
+    _admin_route: FALSE
+
+stripe_subscription.validate_coupon:
+  path: '/subscription/validate-coupon'
+  defaults:
+    _controller: '\Drupal\stripe_subscription\Controller\StripeSubscriptionController::validateCoupon'
+    _title: 'Validate Coupon'
+  requirements:
+    _custom_access: 'stripe_subscription.access_checker:checkPaymentAccess'
+  methods: [POST]
+  options:
+    _admin_route: FALSE
+
+stripe_subscription.provider_register:
+  path: '/user/register/provider'
+  defaults:
+    _form: '\Drupal\stripe_subscription\Form\ProviderRegistrationForm'
+    _title: 'Register as a Provider'
+  requirements:
+    _access: 'TRUE'
+  options:
+    _admin_route: FALSE
+
+stripe_subscription.subscription_details:
+  path: '/user/{user}/subscription'
+  defaults:
+    _controller: '\Drupal\stripe_subscription\Controller\StripeSubscriptionController::subscriptionDetails'
+    _title: 'Subscription Details'
+  requirements:
+    _custom_access: '\Drupal\stripe_subscription\Access\StripeSubscriptionAccess::checkSubscriptionAccess'
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+stripe_subscription.tax_receipt:
+  path: '/user/{user}/subscription/tax-receipt/{invoice_id}'
+  defaults:
+    _controller: '\Drupal\stripe_subscription\Controller\StripeSubscriptionController::downloadTaxReceipt'
+    _title: 'Download Tax Receipt'
+  requirements:
+    _custom_access: '\Drupal\stripe_subscription\Access\StripeSubscriptionAccess::checkSubscriptionAccess'
+  options:
+    parameters:
+      user:
+        type: entity:user

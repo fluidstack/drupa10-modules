@@ -1,0 +1,11 @@
+stripe_subscription.provider_register:
+  title: 'Register as Provider'
+  route_name: stripe_subscription.provider_register
+  base_route: user.page
+  weight: 10
+
+stripe_subscription.subscription_details:
+  title: 'Subscription Details'
+  route_name: stripe_subscription.subscription_details
+  base_route: entity.user.canonical
+  weight: 20

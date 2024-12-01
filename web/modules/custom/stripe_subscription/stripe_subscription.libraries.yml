@@ -1,0 +1,26 @@
+stripe:
+  version: 1.x
+  css:
+    theme:
+      css/stripe-form.css: {}
+      css/loading.css: {}
+  js:
+    js/drupal.init.js: {}
+    https://js.stripe.com/v3/: { type: external, minified: true }
+    js/stripe.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+
+subscription_details:
+  version: 1.x
+  css:
+    theme:
+      css/subscription-details.css: {}
+
+provider_registration:
+  version: 1.x
+  css:
+    theme:
+      css/provider-registration.css: { weight: 10 }

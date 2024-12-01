@@ -1,0 +1,163 @@
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #000;
+  color: white;
+  padding: 8px;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Form layout */
+.business-details-wrapper {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+}
+
+/* Form elements */
+.form-item {
+  margin-bottom: 1.5rem;
+}
+
+.form-item label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Required field indicator */
+.form-required:after {
+  content: "*";
+  color: #dc3545;
+  margin-left: 4px;
+}
+
+/* Form descriptions */
+.description {
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+/* Error messages */
+.error {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 0.75rem;
+  margin-top: 0.25rem;
+  border-radius: 4px;
+}
+
+/* Focus styles */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* High contrast focus indicator */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Form controls */
+.form-text,
+.form-email {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Error state */
+.error input,
+.error select,
+.error textarea {
+  border-color: #dc3545;
+}
+
+/* Status messages */
+.registration-messages {
+  margin-bottom: 1.5rem;
+}
+
+/* Register Provider Tab Styling */
+.register-provider-tab {
+  position: relative;
+  margin-left: auto;
+}
+
+.register-provider-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  color: #fff !important;
+  background-color: #0d6efd;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.register-provider-link:hover,
+.register-provider-link:focus {
+  background-color: #0b5ed7;
+  color: #fff !important;
+  text-decoration: none;
+}
+
+.register-provider-link:focus {
+  outline: 2px solid #0d6efd;
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (forced-colors: active) {
+  .register-provider-link {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .register-provider-link {
+    transition: none;
+  }
+}
+
+/* Responsive design */
+@media screen and (min-width: 768px) {
+  .business-details-wrapper {
+    padding: 2rem;
+  }
+}
+
+/* Color contrast compliance */
+.form-item label {
+  color: #212529;
+}
+
+.description {
+  color: #495057;
+}
+
+/* Focus visible polyfill */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}

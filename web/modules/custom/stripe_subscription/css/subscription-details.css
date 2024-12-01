@@ -1,0 +1,55 @@
+.subscription-details {
+  /* Remove custom styles as we're using Bootstrap */
+}
+
+/* Custom styles to enhance Bootstrap */
+.card {
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.table {
+  font-size: 0.95rem;
+}
+
+.table th {
+  font-weight: 600;
+}
+
+.badge {
+  font-size: 0.875rem;
+  padding: 0.5em 0.75em;
+}
+
+/* Status badge colors */
+.badge.bg-success {
+  color: white;
+}
+
+.badge.bg-warning {
+  background-color: #ffc107 !important;
+  color: #000;
+}
+
+.badge.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .table {
+    font-size: 0.875rem;
+  }
+  
+  .btn-sm {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}

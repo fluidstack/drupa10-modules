@@ -1,0 +1,29 @@
+{#
+/**
+ * @file
+ * Default theme implementation for the provider registration form.
+ *
+ * Available variables:
+ * - form: The complete form array.
+ */
+#}
+<div class="provider-registration-wrapper">
+  {% if form.status_messages %}
+    {{ form.status_messages }}
+  {% endif %}
+  
+  <div class="account-information">
+    {{ form.account }}
+  </div>
+
+  <div class="business-details">
+    {{ form.business_details }}
+  </div>
+
+  <div class="form-actions">
+    {{ form.actions }}
+  </div>
+
+  {# Add any remaining form elements #}
+  {{ form|without('status_messages', 'account', 'business_details', 'actions') }}
+</div>

@@ -1,0 +1,14 @@
+{
+    "name": "drupal/stripe_subscription",
+    "type": "drupal-module",
+    "description": "Provides Stripe subscription functionality for Drupal",
+    "keywords": ["Drupal", "Stripe", "Subscription"],
+    "license": "GPL-2.0+",
+    "minimum-stability": "dev",
+    "require": {
+        "stripe/stripe-php": "^10.0",
+        "drupal/core": "^10 || ^11",
+        "drupal/field": "^3.0",
+        "dompdf/dompdf": "^2.0"
+    }
+}

@@ -1,0 +1,117 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display subscription details.
+ *
+ * Available variables:
+ * - subscription: An array of subscription details including:
+ *   - status: The subscription status
+ *   - plan_name: The name of the subscription plan
+ *   - amount: The subscription amount
+ *   - currency: The currency code
+ *   - renewal_date: The next renewal date
+ *   - interval: The billing interval
+ *   - discount: The applied discount (if any)
+ *   - invoices: Array of subscription invoices
+ */
+#}
+<div class="container py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h2 class="card-title h4 mb-4">{{ 'Subscription Information'|t }}</h2>
+          
+          <div class="row g-3 mb-4">
+            <div class="col-md-6 col-lg-3">
+              <div class="card h-100 bg-light">
+                <div class="card-body">
+                  <h6 class="card-subtitle mb-2 text-muted">{{ 'Status'|t }}</h6>
+                  <span class="badge {{ subscription.status == 'active' ? 'bg-success' : (subscription.status == 'past_due' ? 'bg-warning' : 'bg-danger') }}">
+                    {{ subscription.status|capitalize }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+              <div class="card h-100 bg-light">
+                <div class="card-body">
+                  <h6 class="card-subtitle mb-2 text-muted">{{ 'Plan'|t }}</h6>
+                  <p class="card-text">{{ subscription.plan_name }}</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+              <div class="card h-100 bg-light">
+                <div class="card-body">
+                  <h6 class="card-subtitle mb-2 text-muted">{{ 'Cost'|t }}</h6>
+                  <p class="card-text">
+                    {% if subscription.discount %}
+                      <span class="text-decoration-line-through text-muted">${{ subscription.original_amount }}/{{ subscription.interval }}</span><br>
+                      <span class="text-success">${{ subscription.amount }}/{{ subscription.interval }}</span>
+                      <small class="d-block text-muted">{{ subscription.discount }}</small>
+                    {% else %}
+                      ${{ subscription.amount }}/{{ subscription.interval }}
+                    {% endif %}
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+              <div class="card h-100 bg-light">
+                <div class="card-body">
+                  <h6 class="card-subtitle mb-2 text-muted">{{ 'Next Renewal'|t }}</h6>
+                  <p class="card-text">{{ subscription.renewal_date }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% if subscription.invoices is not empty %}
+            <div class="mt-5">
+              <h3 class="h5 mb-4">{{ 'Tax Receipts'|t }}</h3>
+              <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                  <thead class="table-light">
+                    <tr>
+                      <th scope="col">{{ 'Date'|t }}</th>
+                      <th scope="col">{{ 'Amount'|t }}</th>
+                      <th scope="col">{{ 'Discount'|t }}</th>
+                      <th scope="col" class="text-end">{{ 'Actions'|t }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for invoice in subscription.invoices %}
+                      <tr>
+                        <td>{{ invoice.date }}</td>
+                        <td>${{ invoice.amount }} {{ subscription.currency }}</td>
+                        <td>
+                          {% if invoice.discount %}
+                            <span class="text-success">{{ invoice.discount }}</span>
+                          {% else %}
+                            -
+                          {% endif %}
+                        </td>
+                        <td class="text-end">
+                          <a href="{{ path('stripe_subscription.tax_receipt', {'user': user.id, 'invoice_id': invoice.id}) }}" 
+                             class="btn btn-sm btn-primary"
+                             target="_blank"
+                             rel="noopener">
+                            {{ 'Download Receipt'|t }}
+                          </a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

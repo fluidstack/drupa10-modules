@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_stripe_customer_id
+  module:
+    - user
+id: user.user.field_stripe_customer_id
+field_name: field_stripe_customer_id
+entity_type: user
+bundle: user
+label: 'Stripe Customer ID'
+description: 'The Stripe customer ID associated with this user.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  max_length: 255
+  case_sensitive: false
+field_type: string

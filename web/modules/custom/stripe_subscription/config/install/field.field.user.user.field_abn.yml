@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_abn
+  module:
+    - user
+id: user.user.field_abn
+field_name: field_abn
+entity_type: user
+bundle: user
+label: 'ABN'
+description: 'Australian Business Number'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  max_length: 11
+  case_sensitive: false
+field_type: string

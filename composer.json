@@ -1,0 +1,23 @@
+{
+    "name": "drupal/stripe-subscription-project",
+    "description": "Stripe subscription functionality for Drupal",
+    "type": "project",
+    "require": {
+        "dompdf/dompdf": "^2.0",
+        "stripe/stripe-php": "^10.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/installers": true,
+            "drupal/core-composer-scaffold": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Drupal\\stripe_subscription\\": "stripe_subscription/src/"
+        }
+    }
+}

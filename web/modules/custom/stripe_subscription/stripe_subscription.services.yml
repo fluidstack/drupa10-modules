@@ -1,0 +1,25 @@
+services:
+  stripe_subscription.subscription_manager:
+    class: Drupal\stripe_subscription\StripeSubscriptionManager
+    arguments: 
+      - '@config.factory'
+      - '@current_user'
+      - '@logger.factory'
+      - '@tempstore.private'
+  
+  stripe_subscription.access_checker:
+    class: Drupal\stripe_subscription\Access\StripeSubscriptionAccess
+    arguments: ['@config.factory']
+    tags:
+      - { name: access_checker, applies_to: _custom_access }
+  
+  stripe_subscription.provider_subscriber:
+    class: Drupal\stripe_subscription\EventSubscriber\ProviderNodeSubscriber
+    arguments: ['@current_user', '@current_route_match', '@config.factory', '@messenger']
+    tags:
+      - { name: event_subscriber }
+
+  stripe_subscription.pdf_generator:
+    class: Drupal\stripe_subscription\PdfGenerator
+    arguments: ['@renderer', '@file_system']
+    shared: false

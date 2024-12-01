@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 40px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .receipt-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .company-details,
+    .customer-details {
+      margin-bottom: 30px;
+    }
+    .receipt-details {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    .receipt-details th,
+    .receipt-details td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    .receipt-details th {
+      background-color: #f5f5f5;
+    }
+    .totals {
+      width: 300px;
+      margin-left: auto;
+    }
+    .totals td {
+      padding: 5px;
+    }
+    .totals .total {
+      font-weight: bold;
+      border-top: 2px solid #333;
+    }
+    .discount {
+      color: #198754;
+    }
+    .original-price {
+      text-decoration: line-through;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="receipt-title">Tax Receipt</div>
+    <div>Invoice #{{ receipt.invoice_number }}</div>
+    <div>Date: {{ receipt.date }}</div>
+  </div>
+
+  <div class="company-details">
+    <strong>From:</strong><br>
+    Your Company Name<br>
+    ABN: Your Company ABN<br>
+    Address: Your Company Address<br>
+  </div>
+
+  <div class="customer-details">
+    <strong>To:</strong><br>
+    {{ receipt.business_name }}<br>
+    ABN: {{ receipt.abn }}<br>
+    Email: {{ receipt.email }}
+  </div>
+
+  <table class="receipt-details">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          {{ receipt.description }}
+          {% if receipt.discount %}
+            <br>
+            <span class="discount">{{ receipt.discount }}</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if receipt.original_amount %}
+            <span class="original-price">{{ receipt.currency }} {{ receipt.original_amount }}</span><br>
+            <span class="discount">{{ receipt.currency }} {{ receipt.subtotal }}</span>
+          {% else %}
+            {{ receipt.currency }} {{ receipt.subtotal }}
+          {% endif %}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="totals">
+    <tr>
+      <td>Subtotal:</td>
+      <td>{{ receipt.currency }} {{ receipt.subtotal }}</td>
+    </tr>
+    <tr>
+      <td>GST (10%):</td>
+      <td>{{ receipt.currency }} {{ receipt.gst }}</td>
+    </tr>
+    <tr class="total">
+      <td>Total:</td>
+      <td>{{ receipt.currency }} {{ receipt.total }}</td>
+    </tr>
+  </table>
+
+  <div style="margin-top: 40px">
+    <p><strong>Payment Status:</strong> Paid</p>
+    <p><small>This is a computer-generated document. No signature is required.</small></p>
+  </div>
+</body>
+</html>

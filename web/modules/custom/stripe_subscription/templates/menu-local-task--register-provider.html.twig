@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+ * Theme override for the Register as Provider local task.
+ *
+ * Available variables:
+ * - link: A render element representing the link.
+ * - is_active: Whether the task item is an active tab.
+ * - level: The menu level where the tab is rendered.
+ */
+#}
+{% set classes = [
+  'tabs__tab',
+  is_active ? 'is-active',
+  level > 0 ? 'tabs__tab--secondary',
+  'register-provider-tab'
+] %}
+
+<li{{ attributes.addClass(classes) }}>
+  {{ link }}
+</li>

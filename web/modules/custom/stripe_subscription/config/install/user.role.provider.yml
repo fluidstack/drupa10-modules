@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: provider
+label: Provider
+weight: 3
+is_admin: false
+permissions:
+  - 'access content'

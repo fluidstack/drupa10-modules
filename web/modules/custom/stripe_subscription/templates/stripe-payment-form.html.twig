@@ -1,0 +1,76 @@
+{#
+/**
+ * @file
+ * Default theme implementation for the Stripe payment form.
+ *
+ * Available variables:
+ * - form: The form array.
+ * - subscription: The subscription details array containing:
+ *   - plan_name: The name of the subscription plan
+ *   - interval: The billing interval (month/year)
+ *   - amount: The total amount
+ *   - currency: The currency code
+ *   - gst: The GST amount
+ *   - subtotal: The amount before GST
+ *   - total: The total amount including GST
+ */
+#}
+<form id="stripe-payment-form" class="payment-form">
+  {{ form.form_build_id }}
+  {{ form.form_token }}
+  {{ form.form_id }}
+
+  {% if form.message %}
+    {{ form.message }}
+  {% endif %}
+
+  <div class="payment-summary">
+    <div class="payment-summary__header">
+      <img src="/{{ base_path }}modules/custom/stripe_subscription/images/payment-logo.svg" alt="Payment Logo" class="payment-summary__logo">
+      <h2 class="payment-summary__title">{{ 'Payment Summary'|t }}</h2>
+    </div>
+    
+    <div class="payment-summary__item">
+      <span class="payment-summary__label">{{ 'Service'|t }}</span>
+      <span class="payment-summary__value">{{ form['#subscription'].plan_name }}</span>
+    </div>
+    
+    <div class="payment-summary__item">
+      <span class="payment-summary__label">{{ 'Billing Frequency'|t }}</span>
+      <span class="payment-summary__value">{{ form['#subscription'].interval|capitalize ~ 'ly'|t }}</span>
+    </div>
+    
+    <div class="payment-summary__item">
+      <span class="payment-summary__label">{{ 'Service Fee'|t }}</span>
+      <span class="payment-summary__value payment-summary__amount">${{ form['#subscription'].subtotal }}</span>
+    </div>
+    
+    <div class="payment-summary__item">
+      <span class="payment-summary__label">{{ 'GST (10%)'|t }}</span>
+      <span class="payment-summary__value payment-summary__amount">${{ form['#subscription'].gst }}</span>
+    </div>
+    
+    <div class="payment-summary__item payment-summary__total">
+      <span class="payment-summary__label">{{ 'Total Amount'|t }}</span>
+      <span class="payment-summary__value payment-summary__amount">${{ form['#subscription'].total }}</span>
+    </div>
+  </div>
+
+  <div class="coupon-section">
+    <div class="coupon-form">
+      <input type="text" 
+             id="coupon-code" 
+             class="coupon-input" 
+             placeholder="{{ 'Enter coupon code'|t }}"
+             aria-label="{{ 'Coupon code'|t }}">
+      <button type="button" 
+              id="apply-coupon" 
+              class="coupon-button">{{ 'Apply Coupon'|t }}</button>
+    </div>
+    <div id="coupon-message" class="coupon-message" role="status" aria-live="polite"></div>
+  </div>
+
+  {{ form.stripe_element }}
+  {{ form.payment_errors }}
+  {{ form.actions }}
+</form>

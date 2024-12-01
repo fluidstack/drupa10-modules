@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.field_abn
+field_name: field_abn
+entity_type: user
+type: string
+settings:
+  max_length: 11
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {}

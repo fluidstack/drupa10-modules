@@ -1,0 +1,94 @@
+<?php
+
+/**
+ * @file
+ * Contains stripe_subscription.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
+
+// Ensure DomPDF autoloader is included
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+/**
+ * Implements hook_help().
+ */
+function stripe_subscription_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.stripe_subscription':
+      return '<p>' . t('Provides Stripe subscription functionality for Drupal.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function stripe_subscription_theme($existing, $type, $theme, $path) {
+  return [
+    'stripe_payment_form' => [
+      'render element' => 'form',
+      'path' => $path . '/templates',
+      'template' => 'stripe-payment-form',
+    ],
+    'stripe_subscription_details' => [
+      'variables' => [
+        'subscription' => NULL,
+      ],
+      'path' => $path . '/templates',
+      'template' => 'stripe-subscription-details',
+    ],
+    'stripe_subscription_tax_receipt' => [
+      'variables' => [
+        'receipt' => NULL,
+      ],
+      'path' => $path . '/templates',
+      'template' => 'stripe-subscription-tax-receipt',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function stripe_subscription_page_attachments(array &$attachments) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  
+  if ($current_path === '/mydashboard') {
+    // Check for payment success message in tempstore
+    $tempstore = \Drupal::service('tempstore.private')->get('stripe_subscription');
+    if ($tempstore->get('payment_success_message')) {
+      \Drupal::messenger()->addStatus(t('Thank you! Your payment has been processed successfully. Your provider account is now active.'));
+      $tempstore->delete('payment_success_message');
+    }
+  }
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function stripe_subscription_node_insert(EntityInterface $node) {
+  if ($node->bundle() === 'provider') {
+    $user = \Drupal::currentUser();
+    $config = \Drupal::config('stripe_subscription.settings');
+    $payment_form_role = $config->get('payment_form_role');
+    $paid_role = $config->get('paid_user_role');
+
+    // Check if payment is needed
+    if ($user->hasRole($payment_form_role) && !$user->hasRole($paid_role)) {
+      // Store node ID in session for later reference
+      \Drupal::service('tempstore.private')->get('stripe_subscription')->set('pending_provider_node', $node->id());
+      
+      // Add message about required payment
+      \Drupal::messenger()->addWarning(t('Please complete your subscription payment to activate your provider listing.'));
+      
+      // Set redirect to payment form
+      $url = Url::fromRoute('stripe_subscription.payment_form')->toString();
+      $response = new RedirectResponse($url);
+      $response->send();
+      exit();
+    }
+  }
+}

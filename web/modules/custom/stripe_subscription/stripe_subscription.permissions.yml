@@ -1,0 +1,4 @@
+administer stripe subscription:
+  title: 'Administer Stripe Subscription'
+  description: 'Allow users to configure Stripe subscription settings.'
+  restrict access: TRUE

@@ -1,0 +1,13 @@
+stripe_subscription.settings:
+  title: 'Stripe Subscription'
+  description: 'Configure Stripe subscription settings'
+  parent: system.admin_config_services
+  route_name: stripe_subscription.settings
+  weight: 100
+
+stripe_subscription.provider_register:
+  title: 'Register as Provider'
+  route_name: stripe_subscription.provider_register
+  menu_name: account
+  weight: 0
+  class: Drupal\stripe_subscription\Plugin\Menu\RegisterProviderMenuLink

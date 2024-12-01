@@ -1,0 +1,169 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Stripe Subscription module.
+ */
+
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\user\Entity\Role;
+use Drupal\Core\Field\BaseFieldDefinition;
+
+/**
+ * Implements hook_schema().
+ */
+function stripe_subscription_schema() {
+  return [];
+}
+
+/**
+ * Implements hook_install().
+ */
+function stripe_subscription_install() {
+  // Create required fields if they don't exist
+  $fields = [
+    'field_stripe_customer_id' => [
+      'type' => 'string',
+      'label' => 'Stripe Customer ID',
+      'description' => 'The Stripe customer ID associated with this user.',
+      'settings' => [
+        'max_length' => 255,
+      ],
+    ],
+    'field_business_name' => [
+      'type' => 'string',
+      'label' => 'Business Name',
+      'description' => '',
+      'settings' => [
+        'max_length' => 255,
+      ],
+    ],
+    'field_abn' => [
+      'type' => 'string',
+      'label' => 'ABN',
+      'description' => 'Australian Business Number',
+      'settings' => [
+        'max_length' => 11,
+      ],
+    ],
+  ];
+
+  foreach ($fields as $field_name => $field_info) {
+    $field_storage = FieldStorageConfig::loadByName('user', $field_name);
+    // Create field storage if it doesn't exist
+    if (!$field_storage) {
+      $field_storage = FieldStorageConfig::create([
+        'field_name' => $field_name,
+        'entity_type' => 'user',
+        'type' => $field_info['type'],
+        'settings' => $field_info['settings'],
+        'cardinality' => 1,
+        'translatable' => FALSE,
+      ]);
+      $field_storage->save();
+    }
+
+    $field = FieldConfig::loadByName('user', 'user', $field_name);
+    // Create field instance if it doesn't exist
+    if (!$field) {
+      $field = FieldConfig::create([
+        'field_storage' => $field_storage,
+        'bundle' => 'user',
+        'label' => $field_info['label'],
+        'description' => $field_info['description'],
+        'required' => FALSE,
+        'settings' => $field_info['settings'],
+      ]);
+      $field->save();
+    }
+  }
+
+  // Clear all caches to ensure field definitions are recognized
+  drupal_flush_all_caches();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function stripe_subscription_uninstall() {
+  // Delete all field instances first
+  $fields = [
+    'field_stripe_customer_id',
+    'field_business_name',
+    'field_abn',
+  ];
+
+  foreach ($fields as $field_name) {
+    // Delete field instance
+    $field = FieldConfig::loadByName('user', 'user', $field_name);
+    if ($field) {
+      $field->delete();
+    }
+
+    // Delete field storage
+    $field_storage = FieldStorageConfig::loadByName('user', $field_name);
+    if ($field_storage) {
+      $field_storage->delete();
+    }
+  }
+
+  // Delete module configuration
+  \Drupal::configFactory()->getEditable('stripe_subscription.settings')->delete();
+
+  // Remove the provider role if it exists
+  $role = Role::load('provider');
+  if ($role) {
+    $role->delete();
+  }
+
+  // Delete any remaining configuration
+  $config_names = [
+    'field.storage.user.field_stripe_customer_id',
+    'field.field.user.user.field_stripe_customer_id',
+    'field.storage.user.field_business_name',
+    'field.field.user.user.field_business_name',
+    'field.storage.user.field_abn',
+    'field.field.user.user.field_abn',
+  ];
+
+  foreach ($config_names as $config_name) {
+    \Drupal::configFactory()->getEditable($config_name)->delete();
+  }
+
+  // Clear all caches
+  drupal_flush_all_caches();
+}
+
+/**
+ * Implements hook_update_N().
+ *
+ * Ensures the Stripe customer ID field exists.
+ */
+function stripe_subscription_update_9001() {
+  $field_name = 'field_stripe_customer_id';
+  $field_storage = FieldStorageConfig::loadByName('user', $field_name);
+  
+  if (!$field_storage) {
+    $field_storage = FieldStorageConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => 'user',
+      'type' => 'string',
+      'settings' => ['max_length' => 255],
+      'cardinality' => 1,
+    ]);
+    $field_storage->save();
+    
+    $field = FieldConfig::create([
+      'field_storage' => $field_storage,
+      'bundle' => 'user',
+      'label' => 'Stripe Customer ID',
+      'description' => 'The Stripe customer ID associated with this user.',
+    ]);
+    $field->save();
+    
+    return t('Created Stripe customer ID field.');
+  }
+  
+  return t('Stripe customer ID field already exists.');
+}

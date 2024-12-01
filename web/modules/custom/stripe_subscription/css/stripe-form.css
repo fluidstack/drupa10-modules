@@ -1,0 +1,165 @@
+.payment-intro {
+  margin-bottom: 2em;
+  padding: 0 1rem;
+  max-width: 100%;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Payment Summary */
+.payment-summary {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.payment-summary__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.payment-summary__logo {
+  width: 24px;
+  height: 24px;
+}
+
+.payment-summary__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #212529;
+  margin: 0;
+}
+
+.payment-summary__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.payment-summary__item:last-of-type {
+  border-bottom: none;
+}
+
+.payment-summary__label {
+  color: #6c757d;
+  font-size: 0.95rem;
+}
+
+.payment-summary__value {
+  font-weight: 500;
+  color: #212529;
+}
+
+.payment-summary__total {
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid #dee2e6;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Coupon Section */
+.coupon-section {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.coupon-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.coupon-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.coupon-button {
+  padding: 0.5rem 1rem;
+  background: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.coupon-button:hover:not(:disabled) {
+  background: #0b5ed7;
+}
+
+.coupon-button:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.coupon-message {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.coupon-message.success {
+  color: #198754;
+}
+
+.coupon-message.error {
+  color: #dc3545;
+}
+
+/* Payment element container */
+#payment-element {
+  margin: 24px 0;
+}
+
+/* Error messages */
+#payment-errors {
+  margin-bottom: 1em;
+  padding: 0.75rem;
+  border-radius: 4px;
+  background-color: #fff5f5;
+  color: #dc3545;
+  font-size: 0.875rem;
+  width: 100%;
+  box-sizing: border-box;
+  display: none;
+}
+
+/* Submit button */
+#stripe-submit {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 4px;
+  border: none;
+  background-color: #0d6efd;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#stripe-submit:hover:not(:disabled) {
+  background-color: #0b5ed7;
+}
+
+#stripe-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
